@@ -1,7 +1,8 @@
 import 'dart:ui';
 
-import 'package:covidproject/providers/auth.dart';
-import 'package:covidproject/screens/forgot_password.dart';
+import '../providers/auth.dart';
+import '../screens/forgot_password.dart';
+import '../screens/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
           children: <Widget>[
             SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 70),
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -30,6 +31,9 @@ class WelcomeScreen extends StatelessWidget {
                       "assets/svg/welcome.svg",
                       height: 70,
                       width: 70,
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Container(
                       child: const Text(
@@ -95,10 +99,22 @@ class _WelcomeCardState extends State<WelcomeCard> {
 
   @override
   Widget build(BuildContext context) {
-    const register = Text(
-      'Register',
-      style: TextStyle(
-        color: Colors.red,
+    var text = RichText(
+      text: const TextSpan(
+        // Note: Styles for TextSpans must be explicitly defined.
+        // Child text spans will inherit styles from parent
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Colors.black,
+        ),
+        children: <TextSpan>[
+          TextSpan(text: "Dont't have an account?"),
+          TextSpan(
+            text: 'Register',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: const Color(0xff057163)),
+          ),
+        ],
       ),
     );
     return Column(
@@ -113,10 +129,18 @@ class _WelcomeCardState extends State<WelcomeCard> {
                   TextFormField(
                     decoration: InputDecoration(
                         labelText: 'E-Mail',
+                        labelStyle: TextStyle(color: const Color(0xff057163)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
-                        prefixIcon: const Icon(Icons.email_outlined)),
+                        prefixIcon: const Icon(
+                          Icons.email_outlined,
+                          color: Colors.black,
+                        )),
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
                     validator: (value) {
@@ -135,10 +159,12 @@ class _WelcomeCardState extends State<WelcomeCard> {
                     obscureText: obscureText,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      labelStyle: const TextStyle(color: Color(0xff057163)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                       border: OutlineInputBorder(
-                        // borderSide: BorderSide(
-                        //   color: Theme.of(context).accentColor,
-                        // ),
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       prefixIcon: GestureDetector(
@@ -152,7 +178,7 @@ class _WelcomeCardState extends State<WelcomeCard> {
                           color: Colors.black,
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.black),
+                      hintStyle: const TextStyle(color: Colors.black),
                     ),
                     controller: _passwordController,
                     validator: (value) {
@@ -164,22 +190,22 @@ class _WelcomeCardState extends State<WelcomeCard> {
                       _authData['password'] = value!;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        child: Text(
+                        child: const Text(
                           'Forgot password?',
                           style: TextStyle(
-                              color: Colors.blueAccent,
+                              color: Color(0xff057163),
                               fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
                           Navigator.of(context)
-                              .pushReplacementNamed(ForgotPassword.routename);
+                              .pushNamed(ForgotPassword.routename);
                         },
                       ),
                     ],
@@ -195,8 +221,8 @@ class _WelcomeCardState extends State<WelcomeCard> {
         Container(
           width: 300,
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
-            border: Border.all(color: Colors.blue),
+            color: Color(0xff057163),
+            border: Border.all(color: Color(0xff057163)),
             borderRadius: const BorderRadius.all(Radius.circular(30.0)),
           ),
           child: TextButton(
@@ -207,13 +233,14 @@ class _WelcomeCardState extends State<WelcomeCard> {
             onPressed: _submit,
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
         TextButton(
-          onPressed: () {},
-          child: Text(
-            "Dont't have an account? Register",
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
-          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(Register.routename);
+          },
+          child: text,
         ),
       ],
     );

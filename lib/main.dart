@@ -1,5 +1,10 @@
-import 'package:covidproject/providers/auth.dart';
-import 'package:covidproject/screens/forgot_password.dart';
+import '../providers/auth.dart';
+import '../screens/home.dart';
+import '../screens/forgot_password.dart';
+import '../screens/link_details_screen.dart';
+import '../screens/register.dart';
+import '../screens/link_details_screen.dart';
+
 import 'package:provider/provider.dart';
 
 import '../screens/welcome_screen.dart';
@@ -23,21 +28,24 @@ class MyApp extends StatelessWidget {
           value: Auth(),
         ),
       ],
-      child: MaterialApp(
-        title: 'My Shop House',
-        theme: ThemeData(
-            primaryColor: Colors.purple,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato',
-            scaffoldBackgroundColor: Colors.white,
-            visualDensity: VisualDensity.adaptivePlatformDensity
-            //  fontFamily: 'Lato',
-            ),
-        home: const WelcomeScreen(),
-        routes: {
-          ForgotPassword.routename: (ctx) => ForgotPassword(),
-        },
-      ),
+      child: Consumer<Auth>(
+          builder: (ctx, auth, _) => MaterialApp(
+                title: 'My Shop House',
+                theme: ThemeData(
+                  primaryColor: Colors.redAccent,
+                  fontFamily: 'Lato',
+                  scaffoldBackgroundColor: Colors.white,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                // home: const HomeScreen(),
+                home: auth.isAuth ? const HomeScreen() : const WelcomeScreen(),
+                routes: {
+                  ForgotPassword.routename: (ctx) => const ForgotPassword(),
+                  Register.routename: (ctx) => const Register(),
+                  LinkDetailsScreen.routename: (ctx) =>
+                      const LinkDetailsScreen()
+                },
+              )),
     );
   }
 }
